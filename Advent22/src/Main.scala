@@ -3,8 +3,8 @@ object Main {
     println("Starting (probably)")
     //    Day2.firstPart(exampleFile = true)
     //    Day2.firstPart(exampleFile = !true)
-    Day2.secondPart(exampleFile = false)
-    // Day2.secondPart(exampleFile = !false)
+    // Day2.secondPart(exampleFile = true)
+     Day2.secondPart(exampleFile = !true)
 
   }
 }

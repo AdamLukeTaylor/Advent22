@@ -3,7 +3,7 @@ import scala.io.Source
 case class Round(input: String) {
   def them: Guess = Round.getTheirGuess(input)
 
-  def me: Guess = Round.getMyGuess(input)
+  def me: Guess = Round.getDesiredResultPlay(input)
 
   def score: Int = (them, me) match {
     case (Rock(), Rock()) => 3 + me.getPoints
@@ -29,6 +29,24 @@ object Round {
     case 'X' => Rock()
     case 'Y' => Paper()
     case 'Z' => Scissors()
+  }
+
+  def getDesiredResultPlay(in: String): Guess = in.split(" ").map(_.trim).toList.reverse.head.charAt(0) match {
+    case 'X' => getTheirGuess(in) match {
+      case Rock() => Scissors()
+      case Paper() => Rock()
+      case Scissors() => Paper()
+    }
+    case 'Y' => getTheirGuess(in) match {
+      case Rock() => Rock()
+      case Paper() => Paper()
+      case Scissors() => Scissors()
+    }
+    case 'Z' => getTheirGuess(in) match {
+      case Rock() => Paper()
+      case Paper() => Scissors()
+      case Scissors() => Rock()
+    }
   }
 }
 
