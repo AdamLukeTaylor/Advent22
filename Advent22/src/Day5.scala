@@ -1,4 +1,5 @@
 import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 
 case class Parser(input:String) {
@@ -54,8 +55,33 @@ object Day5 {
 
   def secondPart(exampleFile: Boolean) {
     val dataFile = if (exampleFile) example else myData
+    val dataInsFile = if (exampleFile) exampleIns else myDataIns
+    var stacks: ArrayBuffer[Seq[Char]] = ArrayBuffer.empty
+    for (a <- 0 until 9) stacks = stacks.appended(Seq[Char]())
 
-    ////
+    /////
     val input = Source.fromFile(dataFile).getLines.toList
+    input.map { line =>
+      line.zipWithIndex.map { case (letter, index) =>
+        if (letter.isLetterOrDigit) {
+          val stack = index / 4
+          stacks(stack) = stacks(stack).appended(letter)
+        }
+      }
+
+    }
+    stacks = stacks.map(_.reverse)
+    stacks.map(println)
+
+    val inputIns = Source.fromFile(dataInsFile).getLines.toList
+    inputIns.foreach { ins =>
+      println(s"Ins $ins")
+      val parser = Parser(ins)
+      stacks(parser.target) = Seq(stacks(parser.target),stacks(parser.source).takeRight(parser.quantity)).flatten
+      stacks(parser.source) = stacks(parser.source).dropRight(parser.quantity)
+      stacks.map(println)
+    }
+    stacks.map(println)
+    println(stacks.map(_.reverse.head).mkString)
   }
 }
